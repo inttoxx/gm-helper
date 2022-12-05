@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+import { User } from './users/user.entity/user.entity';
 
 @Module({
   imports: [
@@ -17,14 +19,14 @@ import { ConfigModule } from '@nestjs/config';
         "password": process.env.MYSQL_PASSWORD,
         "database": process.env.MYSQL_DB_NAME,
         "entities": [
-          "dist/**/*.entity{.ts,.js}"
+          User
         ],
         "synchronize": true,
       }
     ),
-    UsersModule
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
