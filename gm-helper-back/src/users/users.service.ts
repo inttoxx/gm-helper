@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { User } from './user.entity/user.entity';
 import * as bcrypt from 'bcrypt'
 
@@ -10,50 +10,58 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>
-     ) { }
+     ){}
+
+     async createUser(user: User) {
+         const usernameAllreadyTaked = await this.GetUserByUsername(user.username)
+         const emailAllreadyTaked = await this.GetUserByEmail(user.email)
+         if (usernameAllreadyTaked || emailAllreadyTaked){
+             return {
+                 'error': 'username or email allready used'
+             }
+         }
+         user.salt = await bcrypt.genSalt();
+         user.password = await bcrypt.hash(user.password, user.salt)
+ 
+         return await this.usersRepository.insert(user)
+    }
 
     async getAllUsers(): Promise<User[]> {
-        const user = await this.usersRepository.find({
-            select: ['id','username', 'email']
+        return await this.usersRepository.find({
+            select: ['id', 'username', 'email', "avatar_img"]
         });
-        return user
     }
 
     async getUserById(id: number): Promise<User> {
-        const user = await this.usersRepository.findOneBy({id});
-        return user
+        return await this.usersRepository.findOne({
+            relations: ['groups', 'characters', 'haracters.group'],
+            select: ["id", "username", "avatar_img", "characters", "groups"],
+            where: [{ "id": id }]
+        });
     }
 
     async GetUserByUsername(username: string): Promise<User> {
-        const user =  await this.usersRepository.findOneBy({username});
-        return user
+        return await this.usersRepository.findOneBy({username});
     }
+
     async GetUserByEmail(email: string): Promise<User> {
-        const user =  await this.usersRepository.findOneBy({email});
-        return user
+        return await this.usersRepository.findOneBy({email});
     }
 
-    async createUser(user: User) {
-        const usernameAllreadyTaked = await this.GetUserByUsername(user.username)
-        const emailAllreadyTaked = await this.GetUserByEmail(user.email)
-        if (usernameAllreadyTaked || emailAllreadyTaked){
-            return {
-                'error': 'username or email allready used'
+    async SearchUserByUsername(username: string): Promise<User[]> {
+        return await this.usersRepository.find({
+            select: ["id", "username", "avatar_img"],
+            where: {
+                "username": Like(`%${username}%`)
             }
-        }
-        user.salt = await bcrypt.genSalt();
-        user.password = await bcrypt.hash(user.password, user.salt)
-
-        this.usersRepository.insert(user)
-
-        return {'message': `user ${user.username} successfully created`}
+        })
     }
 
     async updateUser(user: User) {
-        this.usersRepository.save(user)
+        return await this.usersRepository.save(user)
     }
 
-    async deleteUser(user: User) {
-        this.usersRepository.delete(user);
+    async deleteUser(id: number) {
+        return await this.usersRepository.delete(id);
     }
 }

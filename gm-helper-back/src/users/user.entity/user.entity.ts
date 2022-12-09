@@ -1,8 +1,11 @@
 import {
     IsEmail,
+    IsOptional,
     IsString,
   } from 'class-validator';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Group } from 'src/group/entities/group.entity';
+import { UserCharacter } from 'src/user_character/entities/user_character.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -23,4 +26,13 @@ export class User {
     
     @Column()
     salt: string;
+
+    @Column()
+    avatar_img:string;
+
+    @OneToMany(() => UserCharacter, (userCharacter) => userCharacter.user)
+    characters: UserCharacter[];
+
+    @OneToMany(() => Group, (group) => group.user)
+    groups: Group[]
 }

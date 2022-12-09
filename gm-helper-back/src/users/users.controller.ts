@@ -17,6 +17,11 @@ export class UsersController {
         return this.service.getUserById(params.id);
     }
 
+    @Get('search/:username')
+    getByUsername(@Param() params: any){
+        return this.service.SearchUserByUsername(params.username)
+    }
+
     @Post()
     create(@Body() user: User) {
         return this.service.createUser(user);
