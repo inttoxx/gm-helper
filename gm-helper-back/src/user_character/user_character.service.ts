@@ -147,16 +147,18 @@ export class UserCharacterService {
     if (userchar.selected_skills) {
       let value = 0
       userchar.selected_skills.forEach((skill) => {
-        value += skill.value
-        if (value > 1) {
-          return {
-            error : 'to much skills selected'
-          }
-        }
         userCharToUpdate.selected_skills.forEach((skillToUpdate) => {
           if (skillToUpdate === skill) {
             let index = userCharToUpdate.selected_skills.indexOf(skill)
             userCharToUpdate.selected_skills.splice(index)
+          } else {
+            userCharToUpdate.selected_skills.push(skill)
+            value += skill.value
+            if (value > 1) {
+              return {
+                error : 'to much skills selected'
+              }
+            }
           }
         })
       })
