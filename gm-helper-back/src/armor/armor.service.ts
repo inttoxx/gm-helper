@@ -32,7 +32,22 @@ export class ArmorService {
     })
   }
 
-  async update(armor: Armor) {
+  async update(id: number, updatedarmor: Armor) {
+    const armor = await this.findOne(id)
+
+    if (updatedarmor.cat_armor){
+      armor.cat_armor = updatedarmor.cat_armor
+    }
+    if (updatedarmor.mod){
+      armor.mod = updatedarmor.mod
+    }
+    if (updatedarmor.name){
+      armor.name = updatedarmor.name
+    }
+    if (updatedarmor.magic_effect) {
+      armor.magic_effect = updatedarmor.magic_effect
+    }
+
     return await this.armorRepository.save(armor)
   }
 

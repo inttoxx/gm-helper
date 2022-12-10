@@ -23,9 +23,9 @@ export class UserCharacterController {
     return this.userCharacterService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() UserCharacter: UserCharacter) {
-    return this.userCharacterService.update(UserCharacter);
+  @Put('id')
+  update(@Param('id') id: string, @Body() UserCharacter: UserCharacter) {
+    return this.userCharacterService.update(+id, UserCharacter);
   }
 
   @Delete(':id')

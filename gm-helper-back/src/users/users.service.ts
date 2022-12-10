@@ -34,10 +34,17 @@ export class UsersService {
 
     async getUserById(id: number): Promise<User> {
         return await this.usersRepository.findOne({
-            relations: ['groups', 'characters', 'haracters.group'],
-            select: ["id", "username", "avatar_img", "characters", "groups"],
+            select: ["id", "username", "avatar_img"],
             where: [{ "id": id }]
         });
+    }
+
+    async profile(id: number): Promise<User> {
+        return await this.usersRepository.findOne({
+            relations: ['groups', 'characters', 'characters.group'],
+            select: ["id", "username", "avatar_img", "characters", "groups"],
+            where: [{'id': id}]
+        })
     }
 
     async GetUserByUsername(username: string): Promise<User> {
@@ -57,8 +64,36 @@ export class UsersService {
         })
     }
 
-    async updateUser(user: User) {
-        return await this.usersRepository.save(user)
+    async updateUser(id: number, user: User) {
+        const userToUpdate = await this.usersRepository.findOneBy({'id': id})
+
+        if (user.avatar_img) {
+            userToUpdate.avatar_img = user.avatar_img
+        }
+        if (user.email) {
+            const emailAllreadyTaked = await this.GetUserByEmail(user.email)
+            if (emailAllreadyTaked) {
+                return {
+                    error: "email allready used"
+                }
+            }
+            userToUpdate.email = user.email
+        }
+        if (user.password) {
+            userToUpdate.salt = await bcrypt.genSalt();
+            userToUpdate.password = await bcrypt.hash(user.password, userToUpdate.salt)
+        }
+        if (user.username) {
+            const usernameAllreadyTaked = await this.GetUserByUsername(user.username)
+            if (usernameAllreadyTaked){
+                return {
+                    error: "username allready used"
+                }
+            }
+            userToUpdate.username = user.username
+        }
+
+        return await this.usersRepository.save(userToUpdate)
     }
 
     async deleteUser(id: number) {

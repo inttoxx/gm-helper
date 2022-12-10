@@ -3,6 +3,7 @@ import { Fight } from "src/fight/entities/fight.entity";
 import { Group } from "src/group/entities/group.entity";
 import { Profile } from "src/profile/entities/profile.entity";
 import { Race } from "src/race/entities/race.entity";
+import { Skill } from "src/skill/entities/skill.entity";
 import { User } from "src/users/user.entity/user.entity";
 import { Weapon } from "src/weapon/entities/weapon.entity";
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -66,7 +67,7 @@ export class UserCharacter {
 
     @Column("simple-json")
     money: {
-        golde: number,
+        gold: number,
         silver: number,
         bronze: number,
     }
@@ -96,4 +97,8 @@ export class UserCharacter {
     @ManyToMany(() => Armor)
     @JoinTable()
     armors: Armor[];
+
+    @ManyToMany(() => Skill)
+    @JoinTable()
+    selected_skills: Skill[];
 }

@@ -9,11 +9,11 @@ export class Bestiary {
     @Column()
     name: string;
 
-    @Column()
-    max_pv: number;
-
-    @Column()
-    remaining_pv: number;
+    @Column("simple-json")
+    pv: {
+        max: number,
+        remaining: number,
+    };
 
     @Column("simple-json")
     stats: {

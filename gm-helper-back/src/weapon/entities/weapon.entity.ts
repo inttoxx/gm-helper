@@ -1,3 +1,4 @@
+import { IsOptional } from "class-validator";
 import { Profile } from "src/profile/entities/profile.entity";
 import { UserCharacter } from "src/user_character/entities/user_character.entity";
 import { WeaponCat } from "src/weapon_cat/entities/weapon_cat.entity";
@@ -13,6 +14,10 @@ export class Weapon {
 
     @Column()
     dm: string;
+
+    @Column()
+    @IsOptional()
+    magic_effect: string;
 
     @ManyToOne(() => WeaponCat, (weaponCat) => weaponCat.weapons)
     weapon_cat: WeaponCat;

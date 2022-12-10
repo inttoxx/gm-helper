@@ -32,8 +32,23 @@ export class WeaponService {
     })
   }
 
-  async update(weapon: Weapon) {
-    return await this.weaponRepository.save(weapon)
+  async update(id:number, weapon: Weapon) {
+    const weaponToUpdate = await this.findOne(id)
+
+    if (weapon.dm) {
+      weaponToUpdate.dm = weapon.dm
+    }
+    if (weapon.magic_effect) {
+      weaponToUpdate.magic_effect = weapon.magic_effect
+    }
+    if (weapon.name) {
+      weaponToUpdate.name = weapon.name
+    }
+    if (weapon.weapon_cat) {
+      weaponToUpdate.weapon_cat = weapon.weapon_cat
+    }
+
+    return await this.weaponRepository.save(weaponToUpdate)
   }
 
   async remove(id: number) {

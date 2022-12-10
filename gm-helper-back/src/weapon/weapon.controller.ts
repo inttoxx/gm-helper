@@ -21,9 +21,9 @@ export class WeaponController {
     return this.weaponService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() weapon: Weapon) {
-    return this.weaponService.update(weapon);
+  @Put('id')
+  update(@Param('id') id: string, @Body() weapon: Weapon) {
+    return this.weaponService.update(+id, weapon);
   }
 
   @Delete(':id')

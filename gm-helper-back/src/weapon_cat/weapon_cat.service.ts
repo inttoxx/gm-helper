@@ -28,8 +28,14 @@ export class WeaponCatService {
     })
   }
 
-  async update(weaponCat: WeaponCat) {
-    return await this.weaponCatRepository.save(weaponCat)
+  async update(id: number, weaponCat: WeaponCat) {
+    const weaponCatToUpdate = await this.findOne(id)
+
+    if (weaponCat.name) {
+      weaponCatToUpdate.name = weaponCat.name
+    }
+
+    return await this.weaponCatRepository.save(weaponCatToUpdate)
   }
 
   async remove(id: number) {

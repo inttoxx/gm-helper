@@ -21,9 +21,9 @@ export class SkillController {
     return this.skillService.findOne(+id);
   }
 
-  @Put()
+  @Put('id')
   update(@Param('id') id: string, @Body() skill: Skill) {
-    return this.skillService.update(skill);
+    return this.skillService.update(+id, skill);
   }
 
   @Delete(':id')

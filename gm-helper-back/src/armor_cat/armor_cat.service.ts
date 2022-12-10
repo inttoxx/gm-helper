@@ -19,8 +19,8 @@ export class ArmorCatService {
     return await this.armorCatRepository.find()
   }
 
-  async findOne(id: number) {
-    return await this.armorCatRepository.find({
+  async findOne(id: number): Promise<ArmorCat> {
+    return await this.armorCatRepository.findOne({
       relations: {
         armors: true
       },
@@ -28,8 +28,14 @@ export class ArmorCatService {
     })
   }
 
-  async update(armorCat: ArmorCat) {
-    return await this.armorCatRepository.save(armorCat);
+  async update(id: number, armorCat: ArmorCat) {
+    const catArmor = await this.findOne(id)
+
+    if (armorCat.name) {
+      catArmor.name = armorCat.name
+    }
+
+    return await this.armorCatRepository.save(catArmor);
   }
 
   async remove(id: number) {

@@ -21,9 +21,9 @@ export class BestiaryController {
     return this.bestiaryService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() Bestiary: Bestiary) {
-    return this.bestiaryService.update(Bestiary);
+  @Put('id')
+  update(@Param('id') id: string, @Body() Bestiary: Bestiary) {
+    return this.bestiaryService.update(+id, Bestiary);
   }
 
   @Delete(':id')

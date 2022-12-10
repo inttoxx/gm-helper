@@ -21,9 +21,9 @@ export class WayController {
     return this.wayService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() way: Way) {
-    return this.wayService.update(way);
+  @Put('id')
+  update(@Param('id') id: string, @Body() way: Way) {
+    return this.wayService.update(+id, way);
   }
 
   @Delete(':id')

@@ -34,7 +34,19 @@ export class GroupService {
     })
   }
 
-  async update(group: Group) {
+  async update(id: number, group: Group) {
+    const grp = await this.findOne(id)
+
+    if (group.name) {
+      grp.name = group.name
+    }
+    if (group.note) {
+      grp.note = group.note
+    }
+    if (group.picture) {
+      grp.picture = group.picture
+    }
+
     return await this.groupRepository.save(group)
   }
 

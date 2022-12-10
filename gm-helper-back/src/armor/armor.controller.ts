@@ -21,9 +21,9 @@ export class ArmorController {
     return this.armorService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() armor: Armor) {
-    return this.armorService.update(armor);
+  @Put('id')
+  update(@Param('id') id: string, @Body() armor: Armor) {
+    return this.armorService.update(+id, armor);
   }
 
   @Delete(':id')

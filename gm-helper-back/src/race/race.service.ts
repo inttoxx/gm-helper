@@ -25,8 +25,22 @@ export class RaceService {
     })
   }
 
-  async update(race: Race) {
-    return await this.raceRepository.save(race)
+  async update(id: number, race: Race) {
+    const raceToUpdate = await this.findOne(id)
+
+    if (race.name) {
+      raceToUpdate.name = race.name
+    }
+    if (race.stats_modifications){
+      if (race.stats_modifications.buff) {
+        raceToUpdate.stats_modifications.buff = race.stats_modifications.buff
+      }
+      if (race.stats_modifications.debuff) {
+        raceToUpdate.stats_modifications.debuff = race.stats_modifications.debuff
+      }
+    }
+
+    return await this.raceRepository.save(raceToUpdate)
   }
 
   async remove(id: number) {

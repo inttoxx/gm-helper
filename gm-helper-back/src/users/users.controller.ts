@@ -27,9 +27,9 @@ export class UsersController {
         return this.service.createUser(user);
     }
 
-    @Put()
-    update(@Body() user: User) {
-        return this.service.updateUser(user);
+    @Put('id')
+    update(@Param('id') id: string, @Body() user: User) {
+        return this.service.updateUser(+id, user);
     }
 
     @Delete(':id')

@@ -32,8 +32,17 @@ export class WayService {
     })
   }
 
-  async update(way: Way) {
-    return await this.wayRepository.save(way)
+  async update(id: number, way: Way) {
+    const wayToUpdate = await this.findOne(id)
+
+    if (way.name) {
+      wayToUpdate.name = way.name
+    }
+    if (way.profile) {
+      wayToUpdate.profile = way.profile
+    }
+
+    return await this.wayRepository.save(wayToUpdate)
   }
 
   async remove(id: number) {

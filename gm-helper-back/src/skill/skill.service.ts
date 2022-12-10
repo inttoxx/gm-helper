@@ -32,8 +32,23 @@ export class SkillService {
     })
   }
 
-  async update(skill: Skill) {
-    return await this.skillRepository.save(skill)
+  async update(id: number, skill: Skill) {
+    const skillToUpdate = await this.findOne(id)
+
+    if (skill.description) {
+      skillToUpdate.description = skill.description
+    }
+    if (skill.name) {
+      skillToUpdate.name = skill.name
+    }
+    if (skill.value) {
+      skillToUpdate.value = skill.value
+    }
+    if (skill.way) {
+      skillToUpdate.way = skill.way
+    }
+
+    return await this.skillRepository.save(skillToUpdate)
   }
 
   async remove(id: number) {

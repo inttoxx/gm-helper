@@ -21,9 +21,9 @@ export class WeaponCatController {
     return this.weaponCatService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() weaponCat: WeaponCat) {
-    return this.weaponCatService.update(weaponCat);
+  @Put('id')
+  update(@Param('id') id: string, @Body() weaponCat: WeaponCat) {
+    return this.weaponCatService.update(+id, weaponCat);
   }
 
   @Delete(':id')

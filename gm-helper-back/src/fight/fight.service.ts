@@ -34,8 +34,25 @@ export class FightService {
     })
   }
 
-  async update(fight: Fight) {
-    return await this.fightRepository.save(fight)
+  async update(id: number, fight: Fight) {
+    const fightToUpdate = await this.findOne(id)
+
+    if (fight.spells_over_time){
+      fight.spells_over_time.forEach((spell) => {
+        fightToUpdate.spells_over_time.forEach((spellToUpdate) => {
+          if (spell.name === spellToUpdate.name) {
+            spellToUpdate = spell
+          } else {
+            fightToUpdate.spells_over_time.push(spell)
+          }
+        })
+      })
+    }
+    if (fight.round) {
+      fightToUpdate.round = fight.round
+    }
+
+    return await this.fightRepository.save(fightToUpdate)
   }
 
   async remove(id: number) {

@@ -21,9 +21,9 @@ export class ProfileController {
     return this.profileService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() profile: Profile) {
-    return this.profileService.update(profile);
+  @Put('id')
+  update(@Param('id') id: string, @Body() profile: Profile) {
+    return this.profileService.update(+id, profile);
   }
 
   @Delete(':id')

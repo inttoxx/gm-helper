@@ -23,9 +23,9 @@ export class FightController {
     return this.fightService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() fight: Fight) {
-    return this.fightService.update(fight);
+  @Put('id')
+  update(@Param('id') id: string, @Body() fight: Fight) {
+    return this.fightService.update(+id, fight);
   }
 
   @Delete(':id')

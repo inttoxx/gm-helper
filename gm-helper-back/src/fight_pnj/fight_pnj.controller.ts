@@ -21,9 +21,9 @@ export class FightPnjController {
     return this.fightPnjService.findOne(+id);
   }
 
-  @Put()
-  update(@Body() fightPnj: FightPnj) {
-    return this.fightPnjService.update(fightPnj);
+  @Put('id')
+  update(@Param('id') id: string, @Body() fightPnj: FightPnj) {
+    return this.fightPnjService.update(+id, fightPnj);
   }
 
   @Delete(':id')
