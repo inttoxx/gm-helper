@@ -93,15 +93,19 @@ export class BestiaryService {
       pnj.race = bestiary.race
     }
     if (bestiary.skills) {
-      bestiary.skills.forEach((skill) => {
-        pnj.skills.forEach((pnjSkill) => {
-          if (skill.name === pnjSkill.name) {
-            pnjSkill = skill
-          } else {
-            pnj.skills.push(skill)
+      for (let i = 0; i < bestiary.skills.length; i++) {
+        let found = false
+
+        for (let j = 0; j < pnj.skills.length; j++){
+          if (bestiary.skills[i].name === pnj.skills[j].name){
+            found = true
+            pnj.skills.splice(j, 1)
           }
-        })        
-      })
+        }
+        if (!found) {
+          pnj.skills.push(bestiary.skills[i])
+        }
+      } 
     }
     if (bestiary.stats) {
       if (bestiary.stats.charisma) {

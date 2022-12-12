@@ -21,7 +21,7 @@ export class GroupController {
     return this.groupService.findOne(+id);
   }
 
-  @Put('id')
+  @Put(':id')
   update(@Param('id') id: number, @Body() updateGroupDto: Group) {
     return this.groupService.update(+id, updateGroupDto);
   }

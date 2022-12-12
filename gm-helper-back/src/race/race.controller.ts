@@ -21,7 +21,7 @@ export class RaceController {
     return this.raceService.findOne(+id);
   }
 
-  @Put('id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() race: Race) {
     return this.raceService.update(+id, race);
   }

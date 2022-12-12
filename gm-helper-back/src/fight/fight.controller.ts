@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put, UseGuards, Request } from '@nestjs/common';
 import { FightService } from './fight.service';
 import { Fight } from './entities/fight.entity';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('fight')
 export class FightController {
@@ -23,7 +23,7 @@ export class FightController {
     return this.fightService.findOne(+id);
   }
 
-  @Put('id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() fight: Fight) {
     return this.fightService.update(+id, fight);
   }

@@ -38,15 +38,23 @@ export class FightService {
     const fightToUpdate = await this.findOne(id)
 
     if (fight.spells_over_time){
-      fight.spells_over_time.forEach((spell) => {
-        fightToUpdate.spells_over_time.forEach((spellToUpdate) => {
-          if (spell.name === spellToUpdate.name) {
-            spellToUpdate = spell
-          } else {
-            fightToUpdate.spells_over_time.push(spell)
+      for (let i = 0; i < fight.spells_over_time.length; i++) {
+        let found = false
+
+        for (let j = 0; j < fightToUpdate.spells_over_time.length; j++){
+          if (fight.spells_over_time[i].name === fightToUpdate.spells_over_time[j].name){
+            found = true
+            if (fight.spells_over_time[i].round_remaining === 0){
+              fightToUpdate.spells_over_time.splice(j, 1)
+            } else {
+              fightToUpdate.spells_over_time[j].round_remaining = fight.spells_over_time[i].round_remaining
+            }
           }
-        })
-      })
+        }
+        if (!found) {
+          fightToUpdate.spells_over_time.push(fight.spells_over_time[i])
+        }
+      }
     }
     if (fight.round) {
       fightToUpdate.round = fight.round

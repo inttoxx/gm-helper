@@ -1,8 +1,3 @@
-import {
-    IsEmail,
-    IsOptional,
-    IsString,
-  } from 'class-validator';
 import { Group } from 'src/group/entities/group.entity';
 import { UserCharacter } from 'src/user_character/entities/user_character.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
@@ -13,15 +8,12 @@ export class User {
     id: number;
 
     @Column({length: 25, unique: true})
-    @IsString()
     username: string;
 
     @Column({unique: true})
-    @IsEmail()
     email: string;
 
     @Column()
-    @IsString()
     password: string;
     
     @Column()
@@ -29,6 +21,9 @@ export class User {
 
     @Column()
     avatar_img:string;
+
+    @Column({default: 0})
+    admin: number;
 
     @OneToMany(() => UserCharacter, (userCharacter) => userCharacter.user)
     characters: UserCharacter[];

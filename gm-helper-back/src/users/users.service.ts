@@ -42,7 +42,6 @@ export class UsersService {
     async profile(id: number): Promise<User> {
         return await this.usersRepository.findOne({
             relations: ['groups', 'characters', 'characters.group'],
-            select: ["id", "username", "avatar_img", "characters", "groups"],
             where: [{'id': id}]
         })
     }
@@ -67,6 +66,9 @@ export class UsersService {
     async updateUser(id: number, user: User) {
         const userToUpdate = await this.usersRepository.findOneBy({'id': id})
 
+        if (user.admin){
+            userToUpdate.admin = user.admin
+        }
         if (user.avatar_img) {
             userToUpdate.avatar_img = user.avatar_img
         }

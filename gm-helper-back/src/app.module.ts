@@ -32,6 +32,8 @@ import { UserCharacter } from './user_character/entities/user_character.entity';
 import { Way } from './way/entities/way.entity';
 import { Weapon } from './weapon/entities/weapon.entity';
 import { WeaponCat } from './weapon_cat/entities/weapon_cat.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -79,6 +81,10 @@ import { WeaponCat } from './weapon_cat/entities/weapon_cat.entity';
     SkillModule,
     FightPnjModule,
   ],
+  // providers: [{
+  //   provide: APP_GUARD,
+  //   useClass: RolesGuard,
+  // }],
   controllers: [AppController],
 })
 export class AppModule {}

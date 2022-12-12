@@ -93,15 +93,19 @@ export class FightPnjService {
       pnjToUpdate.race = fightPnj.race
     }
     if (fightPnj.skills) {
-      fightPnj.skills.forEach((skill) => {
-        pnjToUpdate.skills.forEach((skillToUpdate) => {
-          if (skill.name == skillToUpdate.name){
-            skillToUpdate = skill
-          } else {
-            fightPnj.skills.push(skill)
+      for (let i = 0; i < fightPnj.skills.length; i++) {
+        let found = false
+
+        for (let j = 0; j < pnjToUpdate.skills.length; j++){
+          if (fightPnj.skills[i].name === pnjToUpdate.skills[j].name){
+            found = true
+              pnjToUpdate.skills.splice(j, 1)
           }
-        })
-      })
+        }
+        if (!found) {
+          pnjToUpdate.skills.push(fightPnj.skills[i])
+        }
+    }
     }
     if(fightPnj.stats) {
       if (fightPnj.stats.charisma) {

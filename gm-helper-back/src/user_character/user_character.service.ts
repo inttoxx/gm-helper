@@ -17,10 +17,7 @@ export class UserCharacterService {
   }
 
   async findAll(id: any): Promise<UserCharacter[]>{
-    return await this.userCharRepository.find({
-      relations: ['group', 'group.characters', 'group.characters.user', 'selected_skills'],
-      where: [{'user': id}]
-    })
+    return await this.userCharRepository.find()
   }
 
   async findOne(id: number): Promise<UserCharacter> {
@@ -44,16 +41,19 @@ export class UserCharacterService {
     const userCharToUpdate = await this.findOne(id)
 
     if (userchar.armors) {
-      userchar.armors.forEach((armor) => {
-        userCharToUpdate.armors.forEach((armorToUpdate) => {
-          if (armor === armorToUpdate) {
-            let index = userCharToUpdate.armors.indexOf(armor)
-            userCharToUpdate.armors.splice(index)
-          } else {
-            userCharToUpdate.armors.push(armor)
+      for (let i = 0; i < userchar.armors.length; i++) {
+        let found = false
+
+        for (let j = 0; j < userCharToUpdate.armors.length; j++){
+          if (userchar.armors[i].name === userCharToUpdate.armors[j].name){
+            found = true
+              userCharToUpdate.armors.splice(j, 1)
           }
-        })
-      })
+        }
+        if (!found) {
+          userCharToUpdate.armors.push(userchar.armors[i])
+        }
+      }
     }
     if (userchar.attack) {
       if (userchar.attack.magical) {
@@ -82,19 +82,23 @@ export class UserCharacterService {
       userCharToUpdate.initiative = userchar.initiative
     }
     if (userchar.inventory) {
-      userchar.inventory.forEach((item) => {
-        userCharToUpdate.inventory.forEach((intemToUpdate) => {
-          if (item.name === intemToUpdate.name) {
-            intemToUpdate.quantity = item.quantity
-          } else {
-            userCharToUpdate.inventory.push(item)
+      for (let i = 0; i < userchar.inventory.length; i++) {
+        let found = false
+
+        for (let j = 0; j < userCharToUpdate.inventory.length; j++){
+          if (userchar.inventory[i].name === userCharToUpdate.inventory[j].name){
+            found = true
+            if (userchar.inventory[i].quantity === 0){
+              userCharToUpdate.inventory.splice(j, 1)
+            } else {
+              userCharToUpdate.inventory[j].quantity = userchar.inventory[i].quantity
+            }
           }
-          if (item.quantity == 0) {
-            let index = userCharToUpdate.inventory.indexOf(item)
-            userCharToUpdate.inventory.splice(index)
-          }
-        })
-      })
+        }
+        if (!found) {
+          userCharToUpdate.inventory.push(userchar.inventory[i])
+        }
+      }
     }
     if (userchar.level) {
       userCharToUpdate.level = userchar.level
@@ -145,23 +149,26 @@ export class UserCharacterService {
       userCharToUpdate.race = userchar.race
     }
     if (userchar.selected_skills) {
-      let value = 0
-      userchar.selected_skills.forEach((skill) => {
-        userCharToUpdate.selected_skills.forEach((skillToUpdate) => {
-          if (skillToUpdate === skill) {
-            let index = userCharToUpdate.selected_skills.indexOf(skill)
-            userCharToUpdate.selected_skills.splice(index)
-          } else {
-            userCharToUpdate.selected_skills.push(skill)
-            value += skill.value
-            if (value > 1) {
-              return {
-                error : 'to much skills selected'
-              }
+      let value = 0;
+      for (let i = 0; i < userchar.selected_skills.length; i++) {
+          let found = false
+  
+          for (let j = 0; j < userCharToUpdate.selected_skills.length; j++){
+            if (userchar.selected_skills[i].name === userCharToUpdate.selected_skills[j].name){
+              found = true
+              userCharToUpdate.selected_skills.splice(j, 1)
             }
           }
-        })
-      })
+          if (!found) {
+            userCharToUpdate.selected_skills.push(userchar.selected_skills[i])
+            value += userchar.selected_skills[i].value;
+              if (value > 1) {
+                  return {
+                      error: 'to much skills selected'
+                  };
+              }
+          }
+      }
     }
     if (userchar.stats) {
       if (userchar.stats.charisma) {
@@ -184,16 +191,22 @@ export class UserCharacterService {
       }
     }
     if (userchar.weapons) {
-      userchar.weapons.forEach((weapon) => {
-        userCharToUpdate.weapons.forEach((weaponToUpdate) => {
-          if (weapon === weaponToUpdate) {
-            let index = userCharToUpdate.weapons.indexOf(weapon)
-            userCharToUpdate.weapons.splice(index)
-          } else {
-            userCharToUpdate.weapons.push(weapon)
+      for (let i = 0; i < userchar.weapons.length; i++) {
+          let found = false
+  
+          for (let j = 0; j < userCharToUpdate.weapons.length; j++){
+            if (userchar.weapons[i].name === userCharToUpdate.weapons[j].name){
+              found = true
+                userCharToUpdate.weapons.splice(j, 1)
+            }
           }
-        })
-      })
+          if (!found) {
+            userCharToUpdate.weapons.push(userchar.weapons[i])
+          }
+      }
+    }
+    if (userchar.name) {
+      userCharToUpdate.name = userchar.name
     }
 
     return await this.userCharRepository.save(userCharToUpdate)

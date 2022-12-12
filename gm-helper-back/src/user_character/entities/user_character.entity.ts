@@ -54,7 +54,7 @@ export class UserCharacter {
         melee: number,
         ranged: number,
         magical: number,
-    }
+    };
 
     @Column()
     defense: number;
@@ -63,14 +63,14 @@ export class UserCharacter {
     inventory: {
         name: string,
         quantity: number,
-    }[]
+    }[];
 
     @Column("simple-json")
     money: {
         gold: number,
         silver: number,
         bronze: number,
-    }
+    };
 
     @Column()
     description: string;

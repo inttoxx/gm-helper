@@ -21,7 +21,7 @@ export class ArmorCatController {
     return this.armorCatService.findOne(+id);
   }
 
-  @Put('id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() armorCat: ArmorCat) {
     return this.armorCatService.update(+id, armorCat);
   }

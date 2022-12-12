@@ -1,9 +1,10 @@
 import { Controller, Get, Request, Post, UseGuards, Body, ValidationPipe } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { LocalAuthGuard } from './auth/local-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
 import { User } from './users/user.entity/user.entity';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Controller()
 export class AppController {
@@ -26,7 +27,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   async getProfile(@Request() req) {
-    console.log(req)
-    return await this.usersService.profile(req.sub)
+    return await this.usersService.profile(req.user.userId)
   }
 }

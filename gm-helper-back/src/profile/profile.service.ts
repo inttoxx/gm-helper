@@ -38,28 +38,34 @@ export class ProfileService {
       profileToUpdate.attack_type = profile.attack_type
     }
     if (profile.authorized_armor_cat) {
-      profile.authorized_armor_cat.forEach((armor) => {
-        profileToUpdate.authorized_armor_cat.forEach((armorToUpdate => {
-          if (armor === armorToUpdate){
-            let index = profileToUpdate.authorized_armor_cat.indexOf(armor)
-            profileToUpdate.authorized_armor_cat.splice(index)
-          } else {
-            profileToUpdate.authorized_armor_cat.push(armor)
+      for (let i = 0; i < profile.authorized_armor_cat.length; i++) {
+        let found = false
+
+        for (let j = 0; j < profileToUpdate.authorized_armor_cat.length; j++){
+          if (profile.authorized_armor_cat[i].name === profileToUpdate.authorized_armor_cat[j].name){
+            found = true
+            profileToUpdate.authorized_armor_cat.splice(j, 1)
           }
-        }))
-      })
+        }
+        if (!found) {
+          profileToUpdate.authorized_armor_cat.push(profile.authorized_armor_cat[i])
+        }
+      }
     }
     if (profile.authorized_weapon_cat) {
-      profile.authorized_weapon_cat.forEach((weapon) => {
-        profileToUpdate.authorized_weapon_cat.forEach((weaponToUpdate => {
-          if (weapon === weaponToUpdate){
-            let index = profileToUpdate.authorized_weapon_cat.indexOf(weapon)
-            profileToUpdate.authorized_weapon_cat.splice(index)
-          } else {
-            profileToUpdate.authorized_weapon_cat.push(weapon)
+      for (let i = 0; i < profile.authorized_weapon_cat.length; i++) {
+        let found = false
+
+        for (let j = 0; j < profileToUpdate.authorized_weapon_cat.length; j++){
+          if (profile.authorized_weapon_cat[i].name === profileToUpdate.authorized_weapon_cat[j].name){
+            found = true
+            profileToUpdate.authorized_weapon_cat.splice(j, 1)
           }
-        }))
-      })
+        }
+        if (!found) {
+          profileToUpdate.authorized_weapon_cat.push(profile.authorized_weapon_cat[i])
+        }
+      }
     }
     if (profile.name) {
       profileToUpdate.name = profile.name
@@ -71,40 +77,49 @@ export class ProfileService {
       profileToUpdate.pv_dice = profile.pv_dice
     }
     if (profile.starter_armors) {
-      profile.starter_armors.forEach((armor) => {
-        profileToUpdate.starter_armors.forEach((armorToUpdate => {
-          if (armor === armorToUpdate){
-            let index = profileToUpdate.starter_armors.indexOf(armor)
-            profileToUpdate.starter_armors.splice(index)
-          } else {
-            profileToUpdate.starter_armors.push(armor)
+      for (let i = 0; i < profile.starter_armors.length; i++) {
+        let found = false
+
+        for (let j = 0; j < profileToUpdate.starter_armors.length; j++){
+          if (profile.starter_armors[i].name === profileToUpdate.starter_armors[j].name){
+            found = true
+            profileToUpdate.starter_armors.splice(j, 1)
           }
-        }))
-      })
+        }
+        if (!found) {
+          profileToUpdate.starter_armors.push(profile.starter_armors[i])
+        }
+      }
     }
     if (profile.starter_weapons) {
-      profile.starter_weapons.forEach((weapon) => {
-        profileToUpdate.starter_weapons.forEach((weaponToUpdate => {
-          if (weapon === weaponToUpdate){
-            let index = profileToUpdate.starter_weapons.indexOf(weapon)
-            profileToUpdate.starter_weapons.splice(index)
-          } else {
-            profileToUpdate.starter_weapons.push(weapon)
+      for (let i = 0; i < profile.starter_weapons.length; i++) {
+        let found = false
+
+        for (let j = 0; j < profileToUpdate.starter_weapons.length; j++){
+          if (profile.starter_weapons[i].name === profileToUpdate.starter_weapons[j].name){
+            found = true
+            profileToUpdate.starter_weapons.splice(j, 1)
           }
-        }))
-      })
+        }
+        if (!found) {
+          profileToUpdate.starter_weapons.push(profile.starter_weapons[i])
+        }
+      }
     }
     if (profile.ways) {
-      profile.ways.forEach((way) => {
-        profileToUpdate.ways.forEach((wayToUpdate => {
-          if (way === wayToUpdate){
-            let index = profileToUpdate.ways.indexOf(way)
-            profileToUpdate.ways.splice(index)
-          } else {
-            profileToUpdate.ways.push(way)
+      for (let i = 0; i < profile.ways.length; i++) {
+        let found = false
+
+        for (let j = 0; j < profileToUpdate.ways.length; j++){
+          if (profile.ways[i].name === profileToUpdate.ways[j].name){
+            found = true
+            profileToUpdate.ways.splice(j, 1)
           }
-        }))
-      })
+        }
+        if (!found) {
+          profileToUpdate.ways.push(profile.ways[i])
+        }
+      }
     }
 
     return await this.profileRepository.save(profileToUpdate)
